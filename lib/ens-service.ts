@@ -73,7 +73,31 @@ export class ENSService {
     }
 
     await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate network delay
-    return mockProfiles[ensName] || null
+    
+    // Si el ENS existe en la lista predefinida, retornarlo
+    if (mockProfiles[ensName]) {
+      return mockProfiles[ensName]
+    }
+    
+    // Para el demo, crear un perfil dinámico si no existe
+    // En producción esto fallaría si el ENS no existe realmente
+    if (ensName.endsWith('.eth')) {
+      const nameWithoutEth = ensName.replace('.eth', '')
+      const dynamicAddress = `0x${Math.random().toString(16).substr(2, 40)}`
+      
+      const dynamicProfile: ENSProfile = {
+        name: ensName,
+        address: dynamicAddress,
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameWithoutEth}`,
+        description: `Miembro familiar ${nameWithoutEth}`,
+        email: `${nameWithoutEth}@example.com`,
+      }
+      
+      console.log(`[Demo] ENS dinámico creado para: ${ensName} -> ${dynamicAddress}`)
+      return dynamicProfile
+    }
+    
+    return null
   }
 
   // Reverse ENS lookup
@@ -85,7 +109,17 @@ export class ENSService {
     }
 
     await new Promise((resolve) => setTimeout(resolve, 300))
-    return mockReverse[address] || null
+    
+    // Si la dirección existe en la lista predefinida, retornarla
+    if (mockReverse[address]) {
+      return mockReverse[address]
+    }
+    
+    // Para el demo, generar un nombre ENS dinámico
+    // En producción esto consultaría el contrato ENS real
+    const dynamicEnsName = `user${address.slice(-6)}.eth`
+    console.log(`[Demo] ENS dinámico generado para dirección: ${address} -> ${dynamicEnsName}`)
+    return dynamicEnsName
   }
 
   // Create a new family group
@@ -141,12 +175,21 @@ export class ENSService {
       throw new Error("Only admin can add members")
     }
 
+    // Validar formato del ENS
+    if (!memberEnsName.endsWith('.eth')) {
+      throw new Error("ENS name must end with .eth (e.g., 'juan.eth')")
+    }
+
     const memberProfile = await this.resolveENS(memberEnsName)
-    if (!memberProfile) throw new Error("ENS name not found")
+    if (!memberProfile) {
+      throw new Error(`ENS name '${memberEnsName}' not found. Please use a valid ENS name ending with .eth`)
+    }
 
     // Check if member already exists
     const existingMember = group.members.find((m) => m.address === memberProfile.address)
-    if (existingMember) throw new Error("Member already in group")
+    if (existingMember) {
+      throw new Error(`Member with ENS '${memberEnsName}' is already in this group`)
+    }
 
     const newMember: FamilyMember = {
       id: `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
