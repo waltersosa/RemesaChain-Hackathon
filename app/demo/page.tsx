@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Send, Wallet, Clock, CheckCircle, AlertCircle, Copy, Download, Users } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
+import { LanguageToggle } from "@/components/language-toggle"
 import { WalletGuard } from "@/components/wallet-guard"
 import { useWallet } from "@/components/wallet-provider"
 import { BankingIdentityManager } from "@/components/banking-identity-manager"
@@ -65,6 +66,17 @@ export default function RemittanceDemo() {
 
   const [familyGroups, setFamilyGroups] = useState<FamilyGroup[]>([])
   const [selectedFamilyGroup, setSelectedFamilyGroup] = useState<FamilyGroup | null>(null)
+  const [voucherModal, setVoucherModal] = useState<{
+    isOpen: boolean
+    voucherContent: string
+    remittanceId: string
+    bankAccount: BankAccount | null
+  }>({
+    isOpen: false,
+    voucherContent: "",
+    remittanceId: "",
+    bankAccount: null,
+  })
   const ensService = ENSService.getInstance()
   const familyContractService = FamilyContractService.getInstance()
 
@@ -87,6 +99,18 @@ export default function RemittanceDemo() {
       senderName: "Carlos Rodríguez",
     },
   ])
+
+  // Effect para cerrar modal con Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && voucherModal.isOpen) {
+        setVoucherModal({ ...voucherModal, isOpen: false })
+      }
+    }
+
+    document.addEventListener("keydown", handleEscape)
+    return () => document.removeEventListener("keydown", handleEscape)
+  }, [voucherModal.isOpen])
 
   const updatePriceData = async () => {
     setIsLoadingRate(true)
@@ -131,7 +155,7 @@ export default function RemittanceDemo() {
       if (sendData.sendToFamily && sendData.familyGroupId) {
         // Send to family group using contract service
         const targetMemberAddress = sendData.targetMemberId
-          ? selectedFamilyGroup?.members.find((m) => m.id === sendData.targetMemberId)?.address
+          ? selectedFamilyGroup?.members.find((m) => m.id === sendData.targetMemberId)?.address || undefined
           : undefined
 
         const familyRemittance = await familyContractService.sendToFamilyGroup(
@@ -146,7 +170,7 @@ export default function RemittanceDemo() {
         // Store family remittance record
         const filecoinStorage = FilecoinStorage.getInstance()
         const transactionRecord = {
-          type: "family_remittance" as const,
+          type: "transaction_record" as const,
           content: JSON.stringify({
             ...familyRemittance,
             conversionData,
@@ -241,11 +265,14 @@ export default function RemittanceDemo() {
     })
 
     const voucherContent = await generateAndStoreVoucher(remittanceId, selectedBankAccount)
-    downloadVoucher(voucherContent, remittanceId)
-
-    alert(
-      `Depósito confirmado en ${selectedBankAccount.bankName} - ${selectedBankAccount.accountNumber}. El voucher se ha almacenado en Filecoin y descargado automáticamente.`,
-    )
+    
+    // Abrir modal del voucher en lugar de alert
+    setVoucherModal({
+      isOpen: true,
+      voucherContent,
+      remittanceId,
+      bankAccount: selectedBankAccount,
+    })
   }
 
   const copyToClipboard = (text: string) => {
@@ -524,18 +551,21 @@ export default function RemittanceDemo() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <Link href="/">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="w-full sm:w-auto">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver
+                {t("common.back")}
               </Button>
             </Link>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Demo de Remesas</h1>
-              <p className="text-muted-foreground">Prueba el flujo completo de envío y recepción de remesas</p>
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{t("demo.page.title")}</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">{t("demo.page.subtitle")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <LanguageToggle />
             </div>
           </div>
 
@@ -545,9 +575,9 @@ export default function RemittanceDemo() {
           >
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="send">Enviar Remesa</TabsTrigger>
-                <TabsTrigger value="receive">Recibir Remesa</TabsTrigger>
-                <TabsTrigger value="banking">Identidad Bancaria</TabsTrigger>
+                <TabsTrigger value="send" className="text-xs sm:text-sm px-2 sm:px-3">{t("demo.tabs.send")}</TabsTrigger>
+                <TabsTrigger value="receive" className="text-xs sm:text-sm px-2 sm:px-3">{t("demo.tabs.receive")}</TabsTrigger>
+                <TabsTrigger value="banking" className="text-xs sm:text-sm px-2 sm:px-3">{t("demo.tabs.banking")}</TabsTrigger>
               </TabsList>
 
               {/* Send Remittance Tab */}
@@ -556,11 +586,10 @@ export default function RemittanceDemo() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Send className="h-5 w-5 text-primary" />
-                      Enviar Remesa
+                      {t("demo.send.title")}
                     </CardTitle>
                     <CardDescription>
-                      Envía USDC que será convertido a USD y depositado en una cuenta bancaria ecuatoriana o a un grupo
-                      familiar
+                      {t("demo.send.description")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -574,15 +603,15 @@ export default function RemittanceDemo() {
                           <CheckCircle className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-semibold text-primary">¡Remesa Enviada!</h3>
+                          <h3 className="text-xl font-semibold text-primary">{t("demo.send.success.title")}</h3>
                           <p className="text-muted-foreground">
                             {sendData.sendToFamily
-                              ? "Tu remesa ha sido enviada al grupo familiar y está disponible para retiro"
-                              : "Tu remesa ha sido enviada al escrow y está siendo procesada"}
+                              ? t("demo.send.success.family")
+                              : t("demo.send.success.regular")}
                           </p>
                         </div>
                         <div className="bg-muted/50 p-4 rounded-lg">
-                          <p className="text-sm font-medium mb-2">Hash de transacción:</p>
+                          <p className="text-sm font-medium mb-2">{t("demo.send.transaction.hash")}:</p>
                           <div className="flex items-center gap-2">
                             <code className="text-xs bg-background px-2 py-1 rounded flex-1">{transactionHash}</code>
                             <Button variant="ghost" size="sm" onClick={() => copyToClipboard(transactionHash)}>
@@ -593,15 +622,15 @@ export default function RemittanceDemo() {
                         <div className="space-y-2 text-sm text-muted-foreground">
                           {sendData.sendToFamily ? (
                             <>
-                              <p>• La remesa está disponible en el contrato del grupo familiar</p>
-                              <p>• Los miembros autorizados pueden retirar los fondos</p>
-                              <p>• Los fondos expiran en 7 días si no son retirados</p>
+                              <p>{t("demo.family.flow.available")}</p>
+                              <p>{t("demo.family.flow.withdraw")}</p>
+                              <p>{t("demo.family.flow.expires")}</p>
                             </>
                           ) : (
                             <>
-                              <p>• La remesa será emparejada con un operador P2P</p>
-                              <p>• El operador depositará USD en la cuenta del destinatario</p>
-                              <p>• El proceso completo toma entre 5-15 minutos</p>
+                              <p>{t("demo.family.flow.p2p")}</p>
+                              <p>{t("demo.family.flow.deposit")}</p>
+                              <p>{t("demo.family.flow.time")}</p>
                             </>
                           )}
                         </div>
@@ -621,7 +650,7 @@ export default function RemittanceDemo() {
                           }}
                           variant="outline"
                         >
-                          Enviar otra remesa
+                          {t("demo.send.another")}
                         </Button>
                       </motion.div>
                     ) : (
@@ -645,7 +674,7 @@ export default function RemittanceDemo() {
                             />
                             <Label htmlFor="sendToFamily" className="flex items-center gap-2">
                               <Users className="h-4 w-4" />
-                              Enviar a grupo familiar ENS
+                              {t("demo.send.family.group")}
                             </Label>
                           </div>
 
@@ -654,15 +683,15 @@ export default function RemittanceDemo() {
                               {familyGroups.length > 0 ? (
                                 <>
                                   <div>
-                                    <Label>Seleccionar grupo familiar</Label>
+                                    <Label>{t("demo.send.family.select")}</Label>
                                     <Select value={sendData.familyGroupId} onValueChange={handleFamilyGroupChange}>
                                       <SelectTrigger>
-                                        <SelectValue placeholder="Selecciona un grupo familiar" />
+                                        <SelectValue placeholder={t("demo.send.family.select.placeholder")} />
                                       </SelectTrigger>
                                       <SelectContent>
                                         {familyGroups.map((group) => (
                                           <SelectItem key={group.id} value={group.id}>
-                                            {group.name} ({group.ensName}) - {group.members.length} miembros
+                                            {group.name} - {group.members.length} miembros
                                           </SelectItem>
                                         ))}
                                       </SelectContent>
@@ -670,17 +699,17 @@ export default function RemittanceDemo() {
                                   </div>
 
                                   {selectedFamilyGroup && (
-                                    <div>
-                                      <Label>Destinatario específico (opcional)</Label>
-                                      <Select
-                                        value={sendData.targetMemberId || ""}
-                                        onValueChange={(value) => setSendData({ ...sendData, targetMemberId: value })}
-                                      >
-                                        <SelectTrigger>
-                                          <SelectValue placeholder="Enviar a todo el grupo" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                          <SelectItem value="">Todo el grupo (cualquiera puede retirar)</SelectItem>
+                                                                      <div>
+                                    <Label>{t("demo.send.family.target")}</Label>
+                                    <Select
+                                      value={sendData.targetMemberId || ""}
+                                      onValueChange={(value) => setSendData({ ...sendData, targetMemberId: value })}
+                                    >
+                                      <SelectTrigger>
+                                        <SelectValue placeholder={t("demo.send.family.target.placeholder")} />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="">{t("demo.send.family.target.all")}</SelectItem>
                                           {selectedFamilyGroup.members
                                             .filter((member) => member.canReceive)
                                             .map((member) => (
@@ -777,10 +806,10 @@ export default function RemittanceDemo() {
                         {/* Transaction Summary with real-time Flare pricing */}
                         {sendData.amount && (
                           <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-medium">Resumen de la transacción:</h4>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs text-muted-foreground">Precio FTSO:</span>
+                                                         <div className="flex items-center justify-between mb-2">
+                               <h4 className="font-medium">{t("demo.send.transaction.summary")}:</h4>
+                                                               <div className="flex items-center gap-2">
+                                   <span className="text-xs text-muted-foreground">{t("demo.send.ftso.price")}:</span>
                                 {isLoadingRate ? (
                                   <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                                 ) : (
@@ -790,46 +819,46 @@ export default function RemittanceDemo() {
                                 )}
                               </div>
                             </div>
-                            <div className="text-sm space-y-1">
-                              <div className="flex justify-between">
-                                <span>Cantidad a enviar:</span>
-                                <span>{sendData.amount} USDC</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>Valor bruto (Flare FTSO):</span>
-                                <span>${(Number.parseFloat(sendData.amount) * currentRate).toFixed(2)} USD</span>
-                              </div>
+                                                         <div className="text-sm space-y-1">
+                               <div className="flex justify-between">
+                                 <span>{t("demo.send.amount.to.send")}:</span>
+                                 <span>{sendData.amount} USDC</span>
+                               </div>
+                               <div className="flex justify-between">
+                                 <span>{t("demo.send.gross.value")}:</span>
+                                 <span>${(Number.parseFloat(sendData.amount) * currentRate).toFixed(2)} USD</span>
+                               </div>
                               {!sendData.sendToFamily && (
-                                <>
-                                  <div className="flex justify-between">
-                                    <span>Comisión de red:</span>
-                                    <span>$0.25 USD</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span>Comisión RemesaChain:</span>
-                                    <span>$1.00 USD</span>
-                                  </div>
-                                  <div className="flex justify-between font-medium border-t pt-1">
-                                    <span>El destinatario recibirá:</span>
-                                    <span>
-                                      ${(Number.parseFloat(sendData.amount) * currentRate - 1.25).toFixed(2)} USD
-                                    </span>
-                                  </div>
-                                </>
+                                                                 <>
+                                   <div className="flex justify-between">
+                                     <span>{t("demo.send.network.fee")}:</span>
+                                     <span>$0.25 USD</span>
+                                   </div>
+                                   <div className="flex justify-between">
+                                     <span>{t("demo.send.platform.fee")}:</span>
+                                     <span>$1.00 USD</span>
+                                   </div>
+                                   <div className="flex justify-between font-medium border-t pt-1">
+                                     <span>{t("demo.send.recipient.will.receive")}:</span>
+                                     <span>
+                                       ${(Number.parseFloat(sendData.amount) * currentRate - 1.25).toFixed(2)} USD
+                                     </span>
+                                   </div>
+                                 </>
                               )}
-                              {sendData.sendToFamily && (
-                                <div className="flex justify-between font-medium border-t pt-1">
-                                  <span>Disponible para retiro:</span>
-                                  <span>${(Number.parseFloat(sendData.amount) * currentRate).toFixed(2)} USD</span>
-                                </div>
-                              )}
+                                                             {sendData.sendToFamily && (
+                                 <div className="flex justify-between font-medium border-t pt-1">
+                                   <span>{t("demo.send.available.for.withdrawal")}:</span>
+                                   <span>${(Number.parseFloat(sendData.amount) * currentRate).toFixed(2)} USD</span>
+                                 </div>
+                               )}
                             </div>
                             <div className="text-xs text-muted-foreground mt-2 p-2 bg-blue-50 rounded">
-                              💡 Precios actualizados cada 30 segundos desde oráculos Flare (FTSO)
+                              {t("demo.info.rates")}
                             </div>
                             {sendData.sendToFamily && selectedFamilyGroup && (
                               <div className="text-xs text-green-700 mt-2 p-2 bg-green-50 rounded">
-                                🏠 Enviando a grupo familiar: {selectedFamilyGroup.name}
+                                🏠 {t("demo.info.family.sending")} {selectedFamilyGroup.name}
                                 {sendData.targetMemberId && (
                                   <span>
                                     {" "}
@@ -849,12 +878,12 @@ export default function RemittanceDemo() {
                           {isSubmitting ? (
                             <>
                               <Clock className="h-4 w-4 mr-2 animate-spin" />
-                              {sendData.sendToFamily ? "Enviando a grupo familiar..." : "Enviando remesa..."}
+                              {sendData.sendToFamily ? t("demo.send.submitting.family") : t("demo.send.submitting")}
                             </>
                           ) : (
                             <>
                               <Send className="h-4 w-4 mr-2" />
-                              {sendData.sendToFamily ? "Enviar a Grupo Familiar" : "Enviar Remesa"}
+                              {sendData.sendToFamily ? t("demo.send.submit.family") : t("demo.send.submit")}
                             </>
                           )}
                         </Button>
@@ -870,14 +899,14 @@ export default function RemittanceDemo() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Wallet className="h-5 w-5 text-primary" />
-                      Recibir Remesas
+                      {t("demo.receive.title")}
                     </CardTitle>
-                    <CardDescription>Revisa las remesas pendientes para tu dirección de wallet</CardDescription>
+                    <CardDescription>{t("demo.receive.description")}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="bg-muted/50 p-4 rounded-lg">
-                        <p className="text-sm font-medium mb-2">Tu dirección de wallet:</p>
+                        <p className="text-sm font-medium mb-2">{t("demo.receive.wallet.address")}</p>
                         <div className="flex items-center gap-2">
                           <code className="text-xs bg-background px-2 py-1 rounded flex-1">{address}</code>
                           <Button variant="ghost" size="sm" onClick={() => copyToClipboard(address || "")}>
@@ -887,7 +916,7 @@ export default function RemittanceDemo() {
                       </div>
 
                       <div>
-                        <h4 className="font-medium mb-3">Remesas pendientes:</h4>
+                        <h4 className="font-medium mb-3">{t("demo.receive.pending.title")}</h4>
                         {pendingRemittances.length > 0 ? (
                           <div className="space-y-3">
                             {pendingRemittances.map((remittance) => (
@@ -916,7 +945,7 @@ export default function RemittanceDemo() {
                                       onClick={() => handleReceiveRemittance(remittance.id)}
                                       className="w-full"
                                     >
-                                      Configurar recepción bancaria
+                                      {t("demo.receive.configure")}
                                     </Button>
                                   )}
 
@@ -924,26 +953,26 @@ export default function RemittanceDemo() {
                                     <div className="space-y-3">
                                       <div className="bg-blue-50 p-3 rounded-lg">
                                         <p className="text-sm text-blue-800">
-                                          ✓ Emparejado con operador P2P. Selecciona tu cuenta bancaria para el depósito.
+                                          {t("demo.receive.matched")}
                                         </p>
                                       </div>
                                       {selectedBankAccount && (
                                         <div className="bg-muted/50 p-3 rounded-lg">
-                                          <p className="text-sm font-medium">Cuenta seleccionada:</p>
+                                          <p className="text-sm font-medium">{t("demo.receive.selected.account")}</p>
                                           <p className="text-sm">
                                             {selectedBankAccount.bankName} - {selectedBankAccount.accountNumber}
                                           </p>
                                         </div>
                                       )}
-                                      <Button
-                                        size="sm"
-                                        onClick={() => handleConfirmReception(remittance.id)}
-                                        className="w-full"
-                                        disabled={!selectedBankAccount}
-                                      >
-                                        <Download className="h-4 w-4 mr-2" />
-                                        Confirmar depósito y generar voucher
-                                      </Button>
+                                                                              <Button
+                                          size="sm"
+                                          onClick={() => handleConfirmReception(remittance.id)}
+                                          className="w-full"
+                                          disabled={!selectedBankAccount}
+                                        >
+                                          <Download className="h-4 w-4 mr-2" />
+                                          {t("demo.receive.confirm.deposit")}
+                                        </Button>
                                     </div>
                                   )}
                                 </CardContent>
@@ -953,7 +982,7 @@ export default function RemittanceDemo() {
                         ) : (
                           <div className="text-center py-8">
                             <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-muted-foreground">No tienes remesas pendientes en este momento</p>
+                            <p className="text-muted-foreground">{t("demo.receive.pending.empty")}</p>
                           </div>
                         )}
                       </div>
@@ -966,8 +995,8 @@ export default function RemittanceDemo() {
               <TabsContent value="banking" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Identidad Bancaria</CardTitle>
-                    <CardDescription>Configura tus cuentas bancarias para recibir depósitos en USD</CardDescription>
+                    <CardTitle>{t("demo.banking.title")}</CardTitle>
+                    <CardDescription>{t("demo.banking.description")}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <BankingIdentityManager
@@ -984,15 +1013,107 @@ export default function RemittanceDemo() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-yellow-800">Demo Mode</h4>
+                  <h4 className="font-medium text-yellow-800">{t("demo.warning.title")}</h4>
                   <p className="text-sm text-yellow-700 mt-1">
-                    Este es un demo funcional. No se procesan transacciones reales de blockchain ni dinero. Todas las
-                    operaciones son simuladas para propósitos de demostración.
+                    {t("demo.warning.description")}
                   </p>
                 </div>
               </div>
             </div>
           </WalletGuard>
+
+          {/* Voucher Modal */}
+          {voucherModal.isOpen && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
+              >
+                {/* Header */}
+                <div className="bg-gradient-to-r from-green-600 to-green-700 p-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold">{t("voucher.title")}</h2>
+                      <p className="text-green-100 mt-1">
+                        {voucherModal.bankAccount?.bankName} - {voucherModal.bankAccount?.accountNumber}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setVoucherModal({ ...voucherModal, isOpen: false })}
+                      className="text-white hover:bg-white/20"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-6">
+                  {/* Success Message */}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
+                      <div>
+                        <h3 className="font-semibold text-green-800">Transacción Completada</h3>
+                        <p className="text-sm text-green-700 mt-1">
+                          El voucher se ha almacenado en Filecoin y está listo para descargar.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Transaction Details */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">Detalles de la Transacción</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">ID de Transacción:</span>
+                        <span className="font-mono text-gray-900">{voucherModal.remittanceId}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Cuenta Bancaria:</span>
+                        <span className="text-gray-900">
+                          {voucherModal.bankAccount?.bankName} - {voucherModal.bankAccount?.accountNumber}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Titular:</span>
+                        <span className="text-gray-900">{voucherModal.bankAccount?.accountHolderName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Fecha:</span>
+                        <span className="text-gray-900">{new Date().toLocaleString("es-EC")}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => {
+                        downloadVoucher(voucherModal.voucherContent, voucherModal.remittanceId)
+                      }}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      {t("voucher.download")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setVoucherModal({ ...voucherModal, isOpen: false })}
+                      className="flex-1"
+                    >
+                      {t("voucher.close")}
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
     </div>

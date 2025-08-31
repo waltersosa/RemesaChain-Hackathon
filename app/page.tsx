@@ -46,15 +46,17 @@ export default function RemesaChainLanding() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container flex h-16 items-center justify-between px-4">
+          {/* Logo y nombre */}
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">RC</span>
             </div>
-            <span className="font-bold text-xl text-foreground">RemesaChain</span>
+            <span className="font-bold text-lg sm:text-xl text-foreground">RemesaChain</span>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-6">
+          {/* Navegación desktop */}
+          <nav className="hidden lg:flex items-center space-x-6">
             <a href="#inicio" className="text-muted-foreground hover:text-foreground transition-colors">
               {t("nav.home")}
             </a>
@@ -72,46 +74,47 @@ export default function RemesaChainLanding() {
             </Link>
           </nav>
 
+          {/* Botones de acción */}
           <div className="flex items-center gap-2">
             <LanguageToggle />
-            <WalletConnectButton variant="outline" size="sm" />
+            <WalletConnectButton variant="outline" size="sm" className="hidden sm:flex" />
             <Link href="/demo">
-              <Button className="bg-accent hover:bg-accent/90">{t("nav.demo")}</Button>
+              <Button className="bg-accent hover:bg-accent/90 text-sm sm:text-base px-3 sm:px-4">
+                {t("nav.demo")}
+              </Button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section id="inicio" className="py-20 px-4">
+      <section id="inicio" className="py-12 sm:py-16 lg:py-20 px-4">
         <div className="container mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
-              {t("hero.title").split("rápidas y económicas")[0]}
-              <span className="text-primary">rápidas y económicas</span>
-              {t("hero.title").split("rápidas y económicas")[1]}
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 text-balance px-2">
+              {t("hero.title")}
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto text-pretty">{t("hero.subtitle")}</p>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-3xl mx-auto text-pretty px-4">{t("hero.subtitle")}</p>
 
-            <div className="max-w-md mx-auto mb-8">
+            <div className="max-w-md mx-auto mb-6 sm:mb-8 px-4">
               <RealTimeRates />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link href="/demo">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4">
+              <Link href="/demo" className="w-full sm:w-auto">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
                   {t("hero.demo-btn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/operator">
-                <Button size="lg" variant="outline">
+              <Link href="/operator" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   {t("hero.operator-btn")}
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/family-groups">
-                <Button size="lg" variant="secondary">
+              <Link href="/family-groups" className="w-full sm:w-auto">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
                   <Users className="mr-2 h-4 w-4" />
                   {t("nav.family-groups")}
                 </Button>
@@ -119,34 +122,34 @@ export default function RemesaChainLanding() {
             </div>
 
             {/* Visual Flow */}
-            <div className="max-w-4xl mx-auto">
-              <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+            <div className="max-w-4xl mx-auto px-4">
+              <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-4">
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mb-2">
-                    <Send className="h-8 w-8 text-accent-foreground" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-accent rounded-full flex items-center justify-center mb-2">
+                    <Send className="h-6 w-6 sm:h-8 sm:w-8 text-accent-foreground" />
                   </div>
-                  <span className="text-sm font-medium">USDC (remitente)</span>
+                  <span className="text-xs sm:text-sm font-medium text-center">USDC (remitente)</span>
                 </div>
                 <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 md:rotate-0" />
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-2">
-                    <Shield className="h-8 w-8 text-primary-foreground" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-full flex items-center justify-center mb-2">
+                    <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-primary-foreground" />
                   </div>
-                  <span className="text-sm font-medium">Escrow</span>
+                  <span className="text-xs sm:text-sm font-medium text-center">Escrow</span>
                 </div>
                 <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 md:rotate-0" />
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-2">
-                    <Users className="h-8 w-8 text-secondary-foreground" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-secondary rounded-full flex items-center justify-center mb-2">
+                    <Users className="h-6 w-6 sm:h-8 sm:w-8 text-secondary-foreground" />
                   </div>
-                  <span className="text-sm font-medium">P2P</span>
+                  <span className="text-xs sm:text-sm font-medium text-center">P2P</span>
                 </div>
                 <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 md:rotate-0" />
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mb-2">
-                    <Banknote className="h-8 w-8 text-accent-foreground" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-accent rounded-full flex items-center justify-center mb-2">
+                    <Banknote className="h-6 w-6 sm:h-8 sm:w-8 text-accent-foreground" />
                   </div>
-                  <span className="text-sm font-medium">USD en banco</span>
+                  <span className="text-xs sm:text-sm font-medium text-center">USD en banco</span>
                 </div>
               </div>
             </div>
@@ -155,7 +158,7 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* Problema Section */}
-      <section className="py-16 px-4 bg-muted/50">
+      <section className="py-12 sm:py-16 px-4 bg-muted/50">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -163,9 +166,9 @@ export default function RemesaChainLanding() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{t("problems.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-foreground px-4">{t("problems.title")}</h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-4">
               <Card className="text-center">
                 <CardHeader>
                   <DollarSign className="h-12 w-12 text-destructive mx-auto mb-4" />
@@ -201,7 +204,7 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* Solución Section */}
-      <section className="py-16 px-4">
+      <section className="py-12 sm:py-16 px-4">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -209,9 +212,9 @@ export default function RemesaChainLanding() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{t("solution.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-foreground px-4">{t("solution.title")}</h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-4">
               <Card className="text-center border-primary/20">
                 <CardHeader>
                   <Zap className="h-12 w-12 text-primary mx-auto mb-4" />
@@ -247,7 +250,7 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* Sponsors Section */}
-      <section id="sponsors" className="py-16 px-4 bg-muted/50">
+      <section id="sponsors" className="py-12 sm:py-16 px-4 bg-muted/50">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -255,9 +258,9 @@ export default function RemesaChainLanding() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{t("sponsors.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-foreground px-4">{t("sponsors.title")}</h2>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 px-4">
               <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Card className="h-full hover:shadow-lg transition-shadow">
                   <CardHeader className="text-center">
@@ -335,7 +338,7 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* Cómo funciona Section */}
-      <section id="como-funciona" className="py-16 px-4">
+      <section id="como-funciona" className="py-12 sm:py-16 px-4">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -343,10 +346,10 @@ export default function RemesaChainLanding() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{t("how-it-works.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-foreground px-4">{t("how-it-works.title")}</h2>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="max-w-4xl mx-auto px-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                 <div className="text-center">
                   <div className="relative">
                     <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
@@ -394,7 +397,7 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* CTA Section */}
-      <section id="contacto" className="py-16 px-4 bg-muted/50">
+      <section id="contacto" className="py-12 sm:py-16 px-4 bg-muted/50">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -402,9 +405,9 @@ export default function RemesaChainLanding() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{t("cta.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-foreground px-4">{t("cta.title")}</h2>
 
-            <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto px-4">
               {/* Operador P2P Form */}
               <Card>
                 <CardHeader>
@@ -504,31 +507,31 @@ export default function RemesaChainLanding() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t">
+      <footer className="py-8 sm:py-12 px-4 border-t">
         <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">RC</span>
               </div>
-              <span className="font-bold text-xl text-foreground">RemesaChain</span>
+              <span className="font-bold text-lg sm:text-xl text-foreground">RemesaChain</span>
             </div>
 
-            <div className="flex space-x-6 mb-4 md:mb-0">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t("footer.terms")}
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t("footer.privacy")}
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t("footer.github")}
               </a>
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t text-center">
-            <p className="text-sm text-muted-foreground">{t("footer.disclaimer")}</p>
+          <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t text-center">
+            <p className="text-xs sm:text-sm text-muted-foreground px-4">{t("footer.disclaimer")}</p>
           </div>
         </div>
       </footer>

@@ -1,0 +1,224 @@
+/* Mobile Optimizations for RemesaChain */
+
+/* Ensure proper touch targets */
+button, a, input, select, textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve form inputs on mobile */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Better spacing for mobile cards */
+@media (max-width: 640px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+}
+
+/* Improve button spacing on mobile */
+@media (max-width: 640px) {
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .button-group button {
+    width: 100%;
+  }
+}
+
+/* Better table responsiveness */
+@media (max-width: 640px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table {
+    min-width: 600px;
+  }
+}
+
+/* Improve modal/dialog on mobile */
+@media (max-width: 640px) {
+  .dialog-content {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Better grid layouts for mobile */
+@media (max-width: 640px) {
+  .grid-mobile-1 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-mobile-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Improve text readability on mobile */
+@media (max-width: 640px) {
+  .text-mobile-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-mobile-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  .text-mobile-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* Better spacing for mobile sections */
+@media (max-width: 640px) {
+  .section-mobile {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .section-mobile-sm {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Improve navigation on mobile */
+@media (max-width: 640px) {
+  .nav-mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 0.5rem;
+    z-index: 50;
+  }
+}
+
+/* Better form layouts on mobile */
+@media (max-width: 640px) {
+  .form-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-mobile .form-group {
+    margin-bottom: 0;
+  }
+}
+
+/* Improve card layouts on mobile */
+@media (max-width: 640px) {
+  .card-mobile {
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+  }
+  
+  .card-mobile .card-header {
+    padding: 1rem;
+  }
+  
+  .card-mobile .card-content {
+    padding: 1rem;
+  }
+}
+
+/* Better button sizing on mobile */
+@media (max-width: 640px) {
+  .btn-mobile-full {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn-mobile-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Improve spacing between elements on mobile */
+@media (max-width: 640px) {
+  .space-mobile-y > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-mobile-y-sm > * + * {
+    margin-top: 0.5rem;
+  }
+}
+
+/* Better image handling on mobile */
+@media (max-width: 640px) {
+  .img-mobile-responsive {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Improve accessibility on mobile */
+@media (max-width: 640px) {
+  .focus-mobile:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+}
+
+/* Better loading states on mobile */
+@media (max-width: 640px) {
+  .loading-mobile {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  
+  .loading-mobile .spinner {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Improve error states on mobile */
+@media (max-width: 640px) {
+  .error-mobile {
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+}
+
+/* Better success states on mobile */
+@media (max-width: 640px) {
+  .success-mobile {
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+  }
+}

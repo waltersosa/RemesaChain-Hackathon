@@ -85,12 +85,89 @@ const translations = {
     "demo.receive.account": "Número de cuenta",
     "demo.receive.submit": "Confirmar recepción",
 
+    // Demo Page
+    "demo.page.title": "Demo de Remesas",
+    "demo.page.subtitle": "Prueba el flujo completo de envío y recepción de remesas",
+    
+    // Demo Tabs
+    "demo.tabs.send": "Enviar Remesa",
+    "demo.tabs.receive": "Recibir Remesas",
+    "demo.tabs.banking": "Identidad Bancaria",
+    
+    // Demo Send Section
+    "demo.send.description": "Envía USDC a cualquier dirección o grupo familiar",
+    "demo.send.recipient.address": "Dirección del destinatario",
+    "demo.send.recipient.name": "Nombre del destinatario",
+    "demo.send.recipient.phone": "Teléfono del destinatario",
+    "demo.send.purpose": "Propósito de la remesa",
+    "demo.send.family.group": "Enviar a grupo familiar ENS",
+    "demo.send.family.select": "Seleccionar grupo familiar",
+    "demo.send.family.select.placeholder": "Selecciona un grupo familiar",
+    "demo.send.family.target": "Destinatario específico (opcional)",
+    "demo.send.family.target.placeholder": "Enviar a todo el grupo",
+    "demo.send.family.target.all": "Todo el grupo (cualquiera puede retirar)",
+    "demo.send.family.info": "Enviando a grupo familiar:",
+    "demo.send.submit.family": "Enviar a Grupo Familiar",
+    "demo.send.submitting": "Enviando remesa...",
+    "demo.send.submitting.family": "Enviando a grupo familiar...",
+    "demo.send.another": "Enviar otra remesa",
+    "demo.send.success.title": "¡Remesa Enviada!",
+    "demo.send.success.family": "Tu remesa ha sido enviada al grupo familiar y está disponible para retiro",
+    "demo.send.success.regular": "Tu remesa ha sido enviada al escrow y está siendo procesada",
+    "demo.send.transaction.hash": "Hash de transacción",
+    "demo.send.transaction.summary": "Resumen de la transacción",
+    "demo.send.ftso.price": "Precio FTSO",
+    "demo.send.amount.to.send": "Cantidad a enviar",
+    "demo.send.gross.value": "Valor bruto (Flare FTSO)",
+    "demo.send.network.fee": "Comisión de red",
+    "demo.send.platform.fee": "Comisión RemesaChain",
+    "demo.send.recipient.will.receive": "El destinatario recibirá",
+    "demo.send.available.for.withdrawal": "Disponible para retiro",
+    
+    // Demo Receive Section
+    "demo.receive.description": "Revisa las remesas pendientes para tu dirección de wallet",
+    "demo.receive.wallet.address": "Tu dirección de wallet:",
+    "demo.receive.pending.title": "Remesas pendientes:",
+    "demo.receive.pending.empty": "No tienes remesas pendientes en este momento",
+    "demo.receive.configure": "Configurar recepción bancaria",
+    "demo.receive.matched": "✓ Emparejado con operador P2P. Selecciona tu cuenta bancaria para el depósito.",
+    "demo.receive.selected.account": "Cuenta seleccionada:",
+    "demo.receive.confirm.deposit": "Confirmar depósito y generar voucher",
+    
+    // Demo Banking Section
+    "demo.banking.title": "Identidad Bancaria",
+    "demo.banking.description": "Configura tus cuentas bancarias para recibir depósitos en USD",
+    
+    // Demo Info Messages
+    "demo.info.rates": "💡 Precios actualizados cada 30 segundos desde oráculos Flare (FTSO)",
+    "demo.info.family.sending": "🏠 Enviando a grupo familiar:",
+    
+    // Demo Family Flow Info
+    "demo.family.flow.available": "• La remesa está disponible en el contrato del grupo familiar",
+    "demo.family.flow.withdraw": "• Los miembros autorizados pueden retirar los fondos",
+    "demo.family.flow.expires": "• Los fondos expiran en 7 días si no son retirados",
+    "demo.family.flow.p2p": "• La remesa será emparejada con un operador P2P",
+    "demo.family.flow.deposit": "• El operador depositará USD en la cuenta del destinatario",
+    "demo.family.flow.time": "• El proceso completo toma entre 5-15 minutos",
+    
+    // Demo Warning
+    "demo.warning.title": "Demo Mode",
+    "demo.warning.description": "Este es un demo funcional. No se procesan transacciones reales de blockchain ni dinero. Todas las operaciones son simuladas para propósitos de demostración.",
+    
+    // Voucher Modal
+    "voucher.title": "✓ Depósito Confirmado",
+    "voucher.download": "Descargar Voucher",
+    "voucher.close": "Cerrar",
+
     // Common
     "common.loading": "Cargando...",
     "common.success": "Éxito",
     "common.error": "Error",
     "common.connect-wallet": "Conectar Wallet",
     "common.wallet-connected": "Wallet Conectada",
+    "common.back": "Volver",
+    "common.back-home": "Volver al inicio",
+    "common.cancel": "Cancelar",
 
     // Operator Registration
     "operator.title": "Registro de Operador P2P",
@@ -153,6 +230,25 @@ const translations = {
     "family.member.role.member": "Miembro",
     "family.member.remove": "Remover",
     "family.member.update": "Actualizar Permisos",
+
+    // Banking Identity
+    "banking.title": "Identidad Bancaria",
+    "banking.subtitle": "Configura tus cuentas bancarias para recibir depósitos en USD",
+    "banking.accounts.title": "Tus Cuentas Bancarias",
+    "banking.accounts.empty": "No tienes cuentas bancarias registradas",
+    "banking.add.title": "Agregar Cuenta Bancaria",
+    "banking.add.bank": "Banco",
+    "banking.add.account": "Número de Cuenta",
+    "banking.add.type": "Tipo de Cuenta",
+    "banking.add.holder": "Titular de la Cuenta",
+    "banking.add.cedula": "Cédula del Titular",
+    "banking.add.submit": "Agregar Cuenta",
+    "banking.add.cancel": "Cancelar",
+    "banking.verify": "Verificar",
+    "banking.verified": "Verificada",
+    "banking.primary": "Principal",
+    "banking.remove": "Eliminar",
+    "banking.edit": "Editar",
   },
   en: {
     // Header
@@ -225,12 +321,89 @@ const translations = {
     "demo.receive.account": "Account number",
     "demo.receive.submit": "Confirm reception",
 
+    // Demo Page
+    "demo.page.title": "Remittance Demo",
+    "demo.page.subtitle": "Test the complete flow of sending and receiving remittances",
+    
+    // Demo Tabs
+    "demo.tabs.send": "Send Remittance",
+    "demo.tabs.receive": "Receive Remittances",
+    "demo.tabs.banking": "Banking Identity",
+    
+    // Demo Send Section
+    "demo.send.description": "Send USDC to any address or family group",
+    "demo.send.recipient.address": "Recipient address",
+    "demo.send.recipient.name": "Recipient name",
+    "demo.send.recipient.phone": "Recipient phone",
+    "demo.send.purpose": "Remittance purpose",
+    "demo.send.family.group": "Send to ENS family group",
+    "demo.send.family.select": "Select family group",
+    "demo.send.family.select.placeholder": "Select a family group",
+    "demo.send.family.target": "Specific recipient (optional)",
+    "demo.send.family.target.placeholder": "Send to entire group",
+    "demo.send.family.target.all": "Entire group (anyone can withdraw)",
+    "demo.send.family.info": "Sending to family group:",
+    "demo.send.submit.family": "Send to Family Group",
+    "demo.send.submitting": "Sending remittance...",
+    "demo.send.submitting.family": "Sending to family group...",
+    "demo.send.another": "Send another remittance",
+    "demo.send.success.title": "Remittance Sent!",
+    "demo.send.success.family": "Your remittance has been sent to the family group and is available for withdrawal",
+    "demo.send.success.regular": "Your remittance has been sent to escrow and is being processed",
+    "demo.send.transaction.hash": "Transaction Hash",
+    "demo.send.transaction.summary": "Transaction Summary",
+    "demo.send.ftso.price": "FTSO Price",
+    "demo.send.amount.to.send": "Amount to send",
+    "demo.send.gross.value": "Gross value (Flare FTSO)",
+    "demo.send.network.fee": "Network fee",
+    "demo.send.platform.fee": "RemesaChain fee",
+    "demo.send.recipient.will.receive": "Recipient will receive",
+    "demo.send.available.for.withdrawal": "Available for withdrawal",
+    
+    // Demo Receive Section
+    "demo.receive.description": "Check pending remittances for your wallet address",
+    "demo.receive.wallet.address": "Your wallet address:",
+    "demo.receive.pending.title": "Pending remittances:",
+    "demo.receive.pending.empty": "You have no pending remittances at this time",
+    "demo.receive.configure": "Configure bank reception",
+    "demo.receive.matched": "✓ Matched with P2P operator. Select your bank account for deposit.",
+    "demo.receive.selected.account": "Selected account:",
+    "demo.receive.confirm.deposit": "Confirm deposit and generate voucher",
+    
+    // Demo Banking Section
+    "demo.banking.title": "Banking Identity",
+    "demo.banking.description": "Configure your bank accounts to receive USD deposits",
+    
+    // Demo Info Messages
+    "demo.info.rates": "💡 Prices updated every 30 seconds from Flare oracles (FTSO)",
+    "demo.info.family.sending": "🏠 Sending to family group:",
+    
+    // Demo Family Flow Info
+    "demo.family.flow.available": "• The remittance is available in the family group contract",
+    "demo.family.flow.withdraw": "• Authorized members can withdraw funds",
+    "demo.family.flow.expires": "• Funds expire in 7 days if not withdrawn",
+    "demo.family.flow.p2p": "• The remittance will be matched with a P2P operator",
+    "demo.family.flow.deposit": "• The operator will deposit USD in the recipient's account",
+    "demo.family.flow.time": "• The complete process takes 5-15 minutes",
+    
+    // Demo Warning
+    "demo.warning.title": "Demo Mode",
+    "demo.warning.description": "This is a functional demo. No real blockchain transactions or money are processed. All operations are simulated for demonstration purposes.",
+    
+    // Voucher Modal
+    "voucher.title": "✓ Deposit Confirmed",
+    "voucher.download": "Download Voucher",
+    "voucher.close": "Close",
+
     // Common
     "common.loading": "Loading...",
     "common.success": "Success",
     "common.error": "Error",
     "common.connect-wallet": "Connect Wallet",
     "common.wallet-connected": "Wallet Connected",
+    "common.back": "Back",
+    "common.back-home": "Back to Home",
+    "common.cancel": "Cancel",
 
     // Operator Registration
     "operator.title": "P2P Operator Registration",
@@ -293,6 +466,25 @@ const translations = {
     "family.member.role.member": "Member",
     "family.member.remove": "Remove",
     "family.member.update": "Update Permissions",
+
+    // Banking Identity
+    "banking.title": "Banking Identity",
+    "banking.subtitle": "Configure your bank accounts to receive USD deposits",
+    "banking.accounts.title": "Your Bank Accounts",
+    "banking.accounts.empty": "You have no registered bank accounts",
+    "banking.add.title": "Add Bank Account",
+    "banking.add.bank": "Bank",
+    "banking.add.account": "Account Number",
+    "banking.add.type": "Account Type",
+    "banking.add.holder": "Account Holder",
+    "banking.add.cedula": "Holder's ID",
+    "banking.add.submit": "Add Account",
+    "banking.add.cancel": "Cancel",
+    "banking.verify": "Verify",
+    "banking.verified": "Verified",
+    "banking.primary": "Primary",
+    "banking.remove": "Remove",
+    "banking.edit": "Edit",
   },
 }
 
@@ -305,6 +497,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setLanguage(saved)
     }
   }, [])
+
+  // Update HTML lang attribute when language changes
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language
+    }
+  }, [language])
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang)

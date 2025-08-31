@@ -18,11 +18,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [address, setAddress] = useState<string | null>(null)
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   const isConnected = !!address
 
-  // Check if wallet is already connected on mount
+  // Evitar hidratación hasta que el componente esté montado
   useEffect(() => {
+    setIsMounted(true)
     checkConnection()
   }, [])
 
@@ -86,6 +88,24 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       window.ethereum.removeAllListeners("accountsChanged")
       window.ethereum.removeAllListeners("chainChanged")
     }
+  }
+
+  // No renderizar el contexto hasta que esté montado
+  if (!isMounted) {
+    return (
+      <WalletContext.Provider
+        value={{
+          address: null,
+          isConnected: false,
+          isConnecting: false,
+          connect: async () => {},
+          disconnect: () => {},
+          error: null,
+        }}
+      >
+        {children}
+      </WalletContext.Provider>
+    )
   }
 
   return (

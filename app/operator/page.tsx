@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, Users, DollarSign, Shield, CheckCircle, AlertCircle } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
+import { LanguageToggle } from "@/components/language-toggle"
 import { WalletGuard } from "@/components/wallet-guard"
 import { useWallet } from "@/components/wallet-provider"
 import Link from "next/link"
@@ -180,19 +181,22 @@ export default function OperatorRegistration() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="flex items-center gap-4 mb-8">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Registro de Operador P2P</h1>
-              <p className="text-muted-foreground">
-                Únete a nuestra red de operadores y ayuda a las familias ecuatorianas
-              </p>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  {t("common.back")}
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Registro de Operador P2P</h1>
+                <p className="text-muted-foreground">
+                  Únete a nuestra red de operadores y ayuda a las familias ecuatorianas
+                </p>
+              </div>
             </div>
+            <LanguageToggle />
           </div>
 
           <WalletGuard

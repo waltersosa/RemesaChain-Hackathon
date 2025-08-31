@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Plus, Building2, CheckCircle, AlertCircle } from "lucide-react"
 import { useWallet } from "./wallet-provider"
+import { useLanguage } from "./language-provider"
 
 interface BankAccount {
   id: string
@@ -27,6 +28,7 @@ interface BankingIdentityManagerProps {
 
 export function BankingIdentityManager({ onAccountSelect, selectedAccountId }: BankingIdentityManagerProps) {
   const { address } = useWallet()
+  const { t } = useLanguage()
   const [accounts, setAccounts] = useState<BankAccount[]>([
     {
       id: "acc_001",
@@ -153,7 +155,7 @@ export function BankingIdentityManager({ onAccountSelect, selectedAccountId }: B
     <div className="space-y-6">
       {/* Existing Accounts */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">Tus Cuentas Bancarias</h3>
+                        <h3 className="text-lg font-semibold mb-4">{t("banking.accounts.title")}</h3>
         {accounts.length > 0 ? (
           <div className="space-y-3">
             {accounts.map((account) => (
@@ -253,7 +255,7 @@ export function BankingIdentityManager({ onAccountSelect, selectedAccountId }: B
         ) : (
           <div className="text-center py-8">
             <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No tienes cuentas bancarias registradas</p>
+                            <p className="text-muted-foreground">{t("banking.accounts.empty")}</p>
           </div>
         )}
       </div>
@@ -385,7 +387,7 @@ export function BankingIdentityManager({ onAccountSelect, selectedAccountId }: B
                     })
                   }}
                 >
-                  Cancelar
+                  {t("common.cancel")}
                 </Button>
               </div>
             </CardContent>
